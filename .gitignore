@@ -1,55 +1,52 @@
-# Prerequisites
-*.d
+# Build outputs
+bin/
+obj/
+publish/
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]in/
+[Oo]bj/
 
-# Precompiled Headers
-*.gch
-*.pch
+# NuGet
+packages/
+*.nupkg
+*.snupkg
+project.lock.json
+project.fragment.lock.json
+artifacts/
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+# Files
+*.log
+*.tmp
+*.temp
+*.cache
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+# FFmpeg (large files - download separately)
+ffmpeg-2026-02-15-git-33b215d155-full_build/
+ffmpeg-2026-02-15-git-33b215d155-full_build.7z
+tools/ffmpeg/
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+# Test demo
+src/FileConverter.TestDemo/
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+# Old solution
+FileConverter.sln
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+# Build scripts (keep build.ps1)
+build.bat
+publish.bat
 
-# debug information files
-*.dwo
+# Icon
+图标.ico
