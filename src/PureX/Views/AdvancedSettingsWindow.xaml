@@ -1,0 +1,350 @@
+<Window x:Class="PureX.Views.AdvancedSettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d"
+        Title="高级设置" Height="600" Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    
+    <Window.Resources>
+        <Style x:Key="SettingLabel" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,5,10,5"/>
+            <Setter Property="Foreground" Value="#424242"/>
+        </Style>
+        
+        <Style x:Key="SettingTextBox" TargetType="TextBox">
+            <Setter Property="Width" Value="80"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Padding" Value="5,0"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+        </Style>
+        
+        <Style x:Key="SettingComboBox" TargetType="ComboBox">
+            <Setter Property="Width" Value="120"/>
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+        </Style>
+        
+        <Style x:Key="SectionHeader" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="#1976D2"/>
+            <Setter Property="Margin" Value="0,10,0,5"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Presets -->
+        <Border Grid.Row="0" Background="#F5F5F5" CornerRadius="4" Padding="10" Margin="0,0,0,15">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock Grid.Column="0" Text="预设方案：" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Presets}" 
+                          SelectedItem="{Binding SelectedPreset}"
+                          DisplayMemberPath="Name"
+                          Width="200" HorizontalAlignment="Left"/>
+                <Button Grid.Column="2" Content="应用" 
+                        Command="{Binding ApplyPresetCommand}"
+                        CommandParameter="{Binding SelectedPreset}"
+                        Padding="15,5"/>
+            </Grid>
+        </Border>
+
+        <!-- Settings -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <!-- Video Settings -->
+                <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="视频设置" Style="{StaticResource SectionHeader}"/>
+                    
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="分辨率：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBox Text="{Binding VideoWidth}" Style="{StaticResource SettingTextBox}"/>
+                            <TextBlock Text=" × " VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding VideoHeight}" Style="{StaticResource SettingTextBox}"/>
+                            <CheckBox Content="保持比例" IsChecked="{Binding KeepAspectRatio}" Margin="15,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="编码器：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding VideoCodecs}" 
+                                  SelectedItem="{Binding VideoCodec}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="编码预设：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding Presets_list}" 
+                                  SelectedItem="{Binding Preset}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="质量(CRF)：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Value="{Binding VideoQuality}" Minimum="0" Maximum="51" Width="150" 
+                                    TickFrequency="5" IsSnapToTickEnabled="True"/>
+                            <TextBlock Text="{Binding VideoQuality}" Width="30" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="码率(kbps)：" Style="{StaticResource SettingLabel}"/>
+                        <TextBox Grid.Column="1" Text="{Binding VideoBitrate}" Style="{StaticResource SettingTextBox}" HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="帧率：" Style="{StaticResource SettingLabel}"/>
+                        <TextBox Grid.Column="1" Text="{Binding Framerate}" Style="{StaticResource SettingTextBox}" HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="旋转：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding RotationOptions}" 
+                                  SelectedItem="{Binding Rotation}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="翻转：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <CheckBox Content="水平翻转" IsChecked="{Binding FlipHorizontal}" Margin="0,0,20,0" VerticalAlignment="Center"/>
+                            <CheckBox Content="垂直翻转" IsChecked="{Binding FlipVertical}" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Audio Settings -->
+                <StackPanel Visibility="{Binding IsAudio, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="音频设置" Style="{StaticResource SectionHeader}"/>
+                    
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="编码器：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding AudioCodecs}" 
+                                  SelectedItem="{Binding AudioCodec}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="码率(kbps)：" Style="{StaticResource SettingLabel}"/>
+                        <TextBox Grid.Column="1" Text="{Binding AudioBitrate}" Style="{StaticResource SettingTextBox}" HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="采样率：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding SampleRates}" 
+                                  SelectedItem="{Binding SampleRate}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="声道数：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ChannelOptions}" 
+                                  SelectedItem="{Binding Channels}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="音量：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Value="{Binding Volume}" Minimum="0" Maximum="3" Width="150" 
+                                    TickFrequency="0.1" IsSnapToTickEnabled="True"/>
+                            <TextBlock Text="{Binding Volume, StringFormat={}{0:F1}}" Width="30" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Image Settings -->
+                <StackPanel Visibility="{Binding IsImage, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="图片设置" Style="{StaticResource SectionHeader}"/>
+                    
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="画质：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <Slider Value="{Binding ImageQuality}" Minimum="1" Maximum="100" Width="150" 
+                                    TickFrequency="5" IsSnapToTickEnabled="True"/>
+                            <TextBlock Text="{Binding ImageQuality}" Width="30" Margin="10,0,0,0" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="尺寸：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBox Text="{Binding ImageWidth}" Style="{StaticResource SettingTextBox}"/>
+                            <TextBlock Text=" × " VerticalAlignment="Center"/>
+                            <TextBox Text="{Binding ImageHeight}" Style="{StaticResource SettingTextBox}"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="旋转：" Style="{StaticResource SettingLabel}"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding RotationOptions}" 
+                                  SelectedItem="{Binding ImageRotation}" Style="{StaticResource SettingComboBox}"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="裁剪：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="X:" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox Text="{Binding CropX}" Style="{StaticResource SettingTextBox}" Width="50"/>
+                            <TextBlock Text="Y:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                            <TextBox Text="{Binding CropY}" Style="{StaticResource SettingTextBox}" Width="50"/>
+                            <TextBlock Text="W:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                            <TextBox Text="{Binding CropWidth}" Style="{StaticResource SettingTextBox}" Width="50"/>
+                            <TextBlock Text="H:" VerticalAlignment="Center" Margin="10,0,5,0"/>
+                            <TextBox Text="{Binding CropHeight}" Style="{StaticResource SettingTextBox}" Width="50"/>
+                        </StackPanel>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="DPI：" Style="{StaticResource SettingLabel}"/>
+                        <TextBox Grid.Column="1" Text="{Binding Dpi}" Style="{StaticResource SettingTextBox}" HorizontalAlignment="Left"/>
+                    </Grid>
+
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="背景色：" Style="{StaticResource SettingLabel}"/>
+                        <TextBox Grid.Column="1" Text="{Binding BackgroundColor}" Style="{StaticResource SettingTextBox}" Width="100" HorizontalAlignment="Left"/>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Time Range (Video/Audio) -->
+                <StackPanel Visibility="{Binding IsVideo, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="片段截取" Style="{StaticResource SectionHeader}"/>
+                    
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <CheckBox Grid.Column="0" Content="启用" IsChecked="{Binding UseTimeRange}" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <TextBlock Text="开始：" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                            <TextBox Text="{Binding StartTime}" Style="{StaticResource SettingTextBox}" Width="80"/>
+                            <TextBlock Text="结束：" VerticalAlignment="Center" Margin="15,0,5,0"/>
+                            <TextBox Text="{Binding EndTime}" Style="{StaticResource SettingTextBox}" Width="80"/>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Concurrency Settings -->
+                <StackPanel>
+                    <TextBlock Text="批量转换设置" Style="{StaticResource SectionHeader}"/>
+                    
+                    <Grid Margin="0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="并发任务数：" Style="{StaticResource SettingLabel}"/>
+                        <StackPanel Grid.Column="1" Orientation="Horizontal">
+                            <ComboBox ItemsSource="{Binding ConcurrencyOptions}" 
+                                      SelectedItem="{Binding MaxConcurrency}" 
+                                      Style="{StaticResource SettingComboBox}" Width="80"/>
+                            <TextBlock Text="（1-5个，默认3个）" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="#757575" FontSize="12"/>
+                        </StackPanel>
+                    </Grid>
+                    
+                    <TextBlock Text="提示：并发数越高，转换速度越快，但会占用更多系统资源。" 
+                               Foreground="#9E9E9E" FontSize="11" Margin="0,5,0,0" TextWrapping="Wrap"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Buttons -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Content="重置默认" Command="{Binding ResetCommand}" 
+                    Padding="15,8" Margin="0,0,10,0"/>
+            <Button Content="确定" Click="OkButton_Click" 
+                    Padding="25,8" IsDefault="True"/>
+            <Button Content="取消" Click="CancelButton_Click" 
+                    Padding="15,8" Margin="10,0,0,0" IsCancel="True"/>
+        </StackPanel>
+    </Grid>
+</Window>
