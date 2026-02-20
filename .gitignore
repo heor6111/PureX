@@ -37,6 +37,9 @@ artifacts/
 ffmpeg-2026-02-15-git-33b215d155-full_build/
 ffmpeg-2026-02-15-git-33b215d155-full_build.7z
 tools/ffmpeg/
+**/ffmpeg/
+**/ffmpeg.exe
+**/ffprobe.exe
 
 # Test demo
 src/FileConverter.TestDemo/
@@ -44,9 +47,13 @@ src/FileConverter.TestDemo/
 # Old solution
 FileConverter.sln
 
-# Build scripts (keep build.ps1)
-build.bat
-publish.bat
-
 # Icon
 图标.ico
+
+# Docs
+docs/
+
+# Archives
+*.7z
+*.zip
+*.rar
