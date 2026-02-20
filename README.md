@@ -1,5 +1,5 @@
-# PureX
-📖 简介
+
+## 📖 简介
 
 PureX 是一款基于 WPF 开发的多媒体格式转换工具，支持视频、音频、图片等多种格式的相互转换。采用 FFmpeg 作为核心转换引擎，提供稳定、高质量的转换服务。
 
@@ -62,7 +62,7 @@ PureX/
 ### 克隆项目
 
 ```bash
-git clone https://github.com/heor6111/PureX.git
+git clone https://github.com/your-username/PureX.git
 cd PureX
 ```
 
@@ -172,3 +172,5 @@ PureX/
 - [FFmpeg](https://ffmpeg.org/) - 强大的多媒体处理框架
 - [ImageMagick](https://imagemagick.org/) - 图片处理库
 - [Extended.Wpf.Toolkit](https://github.com/xceedsoftware/ExtendedWpfToolkit) - WPF控件库
+
+
