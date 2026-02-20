@@ -62,7 +62,7 @@ PureX/
 ### 克隆项目
 
 ```bash
-git clone https://github.com/your-username/PureX.git
+git clone https://github.com/heor6111/PureX.git
 cd PureX
 ```
 
