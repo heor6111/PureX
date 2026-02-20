@@ -1,4 +1,4 @@
-# PureX - 专业多媒体格式转换工具
+# PureX - 专业多媒体格式转换工具（高效利用FFmepg）
 
 <div align="center">
 
