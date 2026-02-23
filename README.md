@@ -65,13 +65,6 @@ PureX 是一款基于 WPF 开发的多媒体格式转换工具，支持视频、
 - .NET 8.0 SDK
 - Visual Studio 2022 或 JetBrains Rider
 
-### 克隆项目
-
-```bash
-git clone https://github.com/your-username/PureX.git
-cd PureX
-```
-
 ### 下载 FFmpeg
 
 ⚠️ **重要**: FFmpeg 不包含在仓库中，需要手动下载：
